@@ -83,18 +83,3 @@ type PromiseReturn<F extends AnyFunction> = F extends (
 export type PromiseRpc = {
   [k in keyof IRpc]: PromiseReturn<IRpc[k]>;
 };
-
-export type RpcFunctionRequest<T extends keyof IRpc> = Parameters<IRpc[T]>[0];
-export type RpcFunctionResponse<T extends keyof IRpc> = ReturnType<IRpc[T]>;
-
-export type RpcRequest<T extends keyof IRpc> = {
-  name: T;
-  request: RpcFunctionRequest<T>;
-};
-
-export type RpcResponse<T extends keyof IRpc> = {
-  response?: RpcFunctionResponse<T>;
-  error?: RpcError;
-};
-
-export type RpcError = string;
