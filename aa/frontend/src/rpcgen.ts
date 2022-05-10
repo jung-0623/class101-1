@@ -93,8 +93,8 @@ export type RpcRequest<T extends keyof IRpc> = {
 };
 
 export type RpcResponse<T extends keyof IRpc> = {
-  response?: RpcFunctionResponse<T>;
   error?: RpcError;
+  response?: RpcFunctionResponse<T>;
 };
 
 export type RpcError = string;
