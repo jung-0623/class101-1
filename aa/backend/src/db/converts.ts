@@ -10,9 +10,9 @@ export async function toPost(m: PostModel): Promise<Post> {
   const author = await toUser(await selectUser(m.authorId))
   return {
     id: m.id,
-    author,
     body: m.body,
     timestamp: m.timestamp,
+    author,
     comments: await toComments(await selectCommentsByPost(m.id)),
   }
 }
