@@ -1,0 +1,76 @@
+import { CommentModel, PostModel, UserModel } from "./models"
+
+export function insertUser(name: string): Promise<void> {
+  users.push({ id: users.length, name })
+  return Promise.resolve()
+}
+
+export function insertPost(body: string, authorId: number): Promise<void> {
+  posts.push({ id: posts.length, body, authorId, timestamp: Date.now() })
+  return Promise.resolve()
+}
+
+export function insertComment(body: string, authorId: number, postId: number): Promise<void> {
+  comments.push({ id: comments.length, postId, body, authorId, timestamp: Date.now() })
+  return Promise.resolve()
+}
+
+export function selectUser(id: number): Promise<UserModel> {
+  return Promise.resolve(findById(id, users))
+}
+
+export function selectPost(id: number): Promise<PostModel> {
+  return Promise.resolve(findById(id, posts))
+}
+
+export function selectRandomPost(): Promise<PostModel> {
+  return Promise.resolve(posts[Math.floor(Math.random() * posts.length)])
+}
+
+export function selectPostsByAuthor(authorId: number): Promise<PostModel[]> {
+  return Promise.resolve(posts.filter((v) => v.authorId === authorId))
+}
+
+export function selectCommentsByAuthor(authorId: number): Promise<CommentModel[]> {
+  return Promise.resolve(comments.filter((v) => v.authorId === authorId))
+}
+
+export function selectCommentsByPost(postId: number): Promise<CommentModel[]> {
+  return Promise.resolve(comments.filter((v) => v.postId === postId))
+}
+
+export function selectComment(id: number): Promise<CommentModel> {
+  return Promise.resolve(findById(id, comments))
+}
+
+export function updateUser(id: number, name: string): Promise<void> {
+  const user = findById(id, users)
+  user.name = name
+  return Promise.resolve()
+}
+
+const users: UserModel[] = [
+  { id: 0, name: "홍길동" },
+  { id: 1, name: "영희" },
+]
+
+const posts: PostModel[] = [
+  { id: 0, authorId: 0, body: "첫 번째 글입니다", timestamp: Date.now() - 1233123 },
+  { id: 1, authorId: 1, body: "두 번째 글", timestamp: Date.now() - 12312123 },
+  { id: 2, authorId: 1, body: "3 번째 글입니다", timestamp: Date.now() - 1231123 },
+  { id: 3, authorId: 0, body: "4 번째 글입니다", timestamp: Date.now() - 1231231 },
+]
+
+const comments: CommentModel[] = [
+  { id: 0, authorId: 0, postId: 0, body: "첫 번째 글의 첫 번째 댓글", timestamp: Date.now() + 213213 },
+  { id: 1, authorId: 1, postId: 0, body: "첫 번째 글의 2 번째 댓글", timestamp: Date.now() + 21321343 },
+  { id: 2, authorId: 0, postId: 3, body: "4번글의 댓글", timestamp: Date.now() + 213213333 },
+]
+
+function findById<T extends { id: number }>(id: number, arr: T[]): T {
+  const r = arr.find((v) => v.id === id)
+  if (!r) {
+    throw Error(`no id: ${id}`)
+  }
+  return r
+}
