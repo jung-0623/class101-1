@@ -1,0 +1,7 @@
+mysql -u root -p
+
+create database dbdb;
+show databases;
+create user 'useruser'@localhost identified by 'asdf1234';
+grant all privileges on dbdb.* to 'useruser'@localhost;
+flush privileges;
