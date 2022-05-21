@@ -9,7 +9,6 @@ app.post("/rpc", rpc)
 export async function listen(hostname: string, port: number): Promise<void> {
   return new Promise((resolve) => {
     app.listen(port, hostname, () => {
-      console.log("listen: ", hostname, port)
       resolve()
     })
   })

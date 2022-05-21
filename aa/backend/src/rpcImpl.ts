@@ -11,7 +11,7 @@ import {
 } from "./db/queries"
 import { toComments, toPost, toPosts, toUser } from "./db/converts"
 
-const userId = 1
+const userId = 3
 
 const rpcImpl: PromiseRpc = {
   createPost: async (req) => {

@@ -10,8 +10,7 @@ export async function initDB(
   password: string,
 ): Promise<void> {
   pool = await mysql.createPool({ host, database, user, password })
-  console.log("db:", host, database)
-  await Promise.all(initQueries.split(";").map((q) => pool!.execute(q)))
+  await Promise.all(initQueries.split(";").map((q) => pool!.query(q)))
 }
 
 export function conn(): mysql.Pool {

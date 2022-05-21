@@ -3,14 +3,14 @@ import { conn } from "./connection"
 import { RowDataPacket } from "mysql2"
 
 export async function insertUser(name: string): Promise<void> {
-  await conn().execute("insert into `users`(`name`) values(?)", [name])
+  await conn().query("insert into `users`(`name`) values(?)", [name])
 }
 
 export async function insertPost(
   body: string,
   authorId: number,
 ): Promise<void> {
-  await conn().execute(
+  await conn().query(
     "insert into `posts`(`body`, `authorId`, `timestamp`) values(?,?,?)",
     [body, authorId, Date.now()],
   )
@@ -21,7 +21,7 @@ export async function insertComment(
   authorId: number,
   postId: number,
 ): Promise<void> {
-  await conn().execute(
+  await conn().query(
     "insert into `comments`(`body`, `authorId`, `postId`, `timestamp`) values(?,?,?,?)",
     [body, authorId, postId, Date.now()],
   )
@@ -80,17 +80,6 @@ export async function selectCommentsByPost(
   return rows as CommentModel[]
 }
 
-export async function selectComment(id: number): Promise<CommentModel> {
-  const [rows] = await conn().query<RowDataPacket[]>(
-    "select * from `comments` where `id` = ?",
-    [id],
-  )
-  return rows[0] as CommentModel
-}
-
 export async function updateUser(id: number, name: string): Promise<void> {
-  await conn().execute("update `users` set `name` = ? where `id` = ?", [
-    name,
-    id,
-  ])
+  await conn().query("update `users` set `name` = ? where `id` = ?", [name, id])
 }
