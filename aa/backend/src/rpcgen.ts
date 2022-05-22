@@ -63,6 +63,13 @@ export interface ReadPreviewResponse {
   comments: Preview[];
 }
 
+export interface ReadOAuth2UrlRequest {
+  provider: OAuth2Provider;
+}
+export interface ReadOAuth2UrlResponse {
+  url: string;
+}
+
 export interface IRpc {
   createPost: (req: CreatePostRequest) => CreatePostResponse;
   createComment: (req: CreateCommentRequest) => CreateCommentResponse;
@@ -71,6 +78,7 @@ export interface IRpc {
   readProfile: (req: ReadProfileRequest) => ReadProfileResponse;
   readPreview: (req: ReadPreviewRequest) => ReadPreviewResponse;
   updateProfile: (req: UpdateProfileRequest) => UpdateProfileResponse;
+  readOAuth2Url: (req: ReadOAuth2UrlRequest) => ReadOAuth2UrlResponse;
 }
 
 type AnyFunction = (...args: any) => any;
@@ -103,4 +111,8 @@ export enum RpcError {
   NoUser,
   NoPost,
   Short,
+}
+
+export enum OAuth2Provider {
+  Kakao,
 }
