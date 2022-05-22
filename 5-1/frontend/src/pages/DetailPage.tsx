@@ -7,7 +7,7 @@ import { formatTimestamp } from "../utils/time"
 
 export default function DetailPage(): JSX.Element {
   const [searchParams] = useSearchParams()
-  const postId = parseInt(searchParams.get("id") ?? "-1", 32)
+  const postId = parseInt(searchParams.get("id") ?? "-1", 10)
 
   const [commentBody, setCommentBody] = useState("")
 
