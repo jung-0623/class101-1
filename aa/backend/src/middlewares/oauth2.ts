@@ -1,6 +1,7 @@
 import { RequestHandler } from "express"
-import { mustInt, mustString } from "../utils/errors"
+import { selectOrInsertUser } from "../db/queries"
 import { OAuth2Provider } from "../rpcgen"
+import { mustInt, mustString } from "../utils/errors"
 import { fetchToken, fetchUniqueId } from "../utils/oauth2"
 
 const oauth2: RequestHandler = (req, res, next) => {
@@ -12,7 +13,10 @@ const oauth2: RequestHandler = (req, res, next) => {
       return fetchUniqueId(provider, accessToken)
     })
     .then((uniqueId) => {
-      res.send(`provider: ${provider}, uniqueId: ${uniqueId}`)
+      return selectOrInsertUser("익명", provider, uniqueId)
+    })
+    .then((user) => {
+      res.send(JSON.stringify(user))
     })
     .catch(next)
 }

@@ -1,4 +1,4 @@
-import { RpcError } from "../rpcgen"
+import { OAuth2Provider, RpcError } from "../rpcgen"
 import { mustLong } from "../utils/errors"
 import { select, selectOne } from "../utils/queries"
 import { conn } from "./connection"
@@ -6,8 +6,15 @@ import { CommentModel, PostModel, UserModel } from "./models"
 
 const ml = (v: string, min?: number) => mustLong(v, RpcError.Short, min)
 
-export async function insertUser(name: string): Promise<void> {
-  await conn().query("insert into `users`(`name`) values(?)", [ml(name)])
+export async function insertUser(
+  name: string,
+  provider: OAuth2Provider,
+  uniqueId: string,
+): Promise<void> {
+  await conn().query(
+    "insert into `users`(`name`,`provider`,`uniqueId`) values(?,?,?)",
+    [ml(name), provider, uniqueId],
+  )
 }
 
 export async function insertPost(
@@ -55,9 +62,36 @@ export const selectCommentsByAuthor = (
 export const selectCommentsByPost = (postId: number): Promise<CommentModel[]> =>
   select("select * from `comments` where `postId` = ?", [postId])
 
+export const selectUserByUniqueId = (
+  provider: OAuth2Provider,
+  uniqueId: string,
+): Promise<UserModel> =>
+  selectOne(
+    "select * from `users` where `provider` = ? and `uniqueId` = ?",
+    [provider, uniqueId],
+    RpcError.NoUser,
+  )
+
 export async function updateUser(id: number, name: string): Promise<void> {
   await conn().query("update `users` set `name` = ? where `id` = ?", [
     ml(name),
     id,
   ])
+}
+
+export async function selectOrInsertUser(
+  name: string,
+  provider: OAuth2Provider,
+  uniqueId: string,
+): Promise<UserModel> {
+  try {
+    return await selectUserByUniqueId(provider, uniqueId)
+  } catch (e) {
+    if (e === RpcError.NoUser) {
+      await insertUser(name, provider, uniqueId)
+      return selectUserByUniqueId(provider, uniqueId)
+    }
+
+    throw e
+  }
 }

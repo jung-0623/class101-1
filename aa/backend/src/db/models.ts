@@ -1,6 +1,8 @@
 export interface UserModel {
   id: number
   name: string
+  provider: number
+  uniqueId: string
 }
 
 export interface PostModel {
