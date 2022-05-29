@@ -1,9 +1,11 @@
 import { RequestHandler } from "express"
+import { IRpc } from "../rpcgen"
 import rpcImpl from "../rpcImpl"
-import { PromiseRpc } from "../rpcgen"
 
 const rpc: RequestHandler = (req, res, next) => {
-  rpcImpl[req.body.name as keyof PromiseRpc](req.body.request)
+  const name = req.body.name as keyof IRpc
+
+  rpcImpl[name](req.body.request)
     .then((response) => {
       res.json({ response })
     })

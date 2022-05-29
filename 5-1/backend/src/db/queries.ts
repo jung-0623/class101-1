@@ -1,52 +1,44 @@
 import { CommentModel, PostModel, UserModel } from "./models"
 
-export function insertUser(name: string): Promise<void> {
+export async function insertUser(name: string): Promise<void> {
   users.push({ id: users.length, name })
-  return Promise.resolve()
 }
 
-export function insertPost(body: string, authorId: number): Promise<void> {
+export async function insertPost(body: string, authorId: number): Promise<void> {
   posts.push({ id: posts.length, body, authorId, timestamp: Date.now() })
-  return Promise.resolve()
 }
 
-export function insertComment(body: string, authorId: number, postId: number): Promise<void> {
+export async function insertComment(body: string, authorId: number, postId: number): Promise<void> {
   comments.push({ id: comments.length, postId, body, authorId, timestamp: Date.now() })
-  return Promise.resolve()
 }
 
-export function selectUser(id: number): Promise<UserModel> {
-  return Promise.resolve(findById(id, users))
+export async function selectUser(id: number): Promise<UserModel> {
+  return findById(id, users)
 }
 
-export function selectPost(id: number): Promise<PostModel> {
-  return Promise.resolve(findById(id, posts))
+export async function selectPost(id: number): Promise<PostModel> {
+  return findById(id, posts)
 }
 
-export function selectRandomPost(): Promise<PostModel> {
-  return Promise.resolve(posts[Math.floor(Math.random() * posts.length)])
+export async function selectRandomPost(): Promise<PostModel> {
+  return posts[Math.floor(Math.random() * posts.length)]
 }
 
-export function selectPostsByAuthor(authorId: number): Promise<PostModel[]> {
-  return Promise.resolve(posts.filter((v) => v.authorId === authorId))
+export async function selectPostsByAuthor(authorId: number): Promise<PostModel[]> {
+  return posts.filter((v) => v.authorId === authorId)
 }
 
-export function selectCommentsByAuthor(authorId: number): Promise<CommentModel[]> {
-  return Promise.resolve(comments.filter((v) => v.authorId === authorId))
+export async function selectCommentsByAuthor(authorId: number): Promise<CommentModel[]> {
+  return comments.filter((v) => v.authorId === authorId)
 }
 
-export function selectCommentsByPost(postId: number): Promise<CommentModel[]> {
-  return Promise.resolve(comments.filter((v) => v.postId === postId))
+export async function selectCommentsByPost(postId: number): Promise<CommentModel[]> {
+  return comments.filter((v) => v.postId === postId)
 }
 
-export function selectComment(id: number): Promise<CommentModel> {
-  return Promise.resolve(findById(id, comments))
-}
-
-export function updateUser(id: number, name: string): Promise<void> {
+export async function updateUser(id: number, name: string): Promise<void> {
   const user = findById(id, users)
   user.name = name
-  return Promise.resolve()
 }
 
 const users: UserModel[] = [
@@ -68,9 +60,9 @@ const comments: CommentModel[] = [
 ]
 
 function findById<T extends { id: number }>(id: number, arr: T[]): T {
-  const r = arr.find((v) => v.id === id)
+  const r = arr.find((v) => v.id === id) // r: T | undefined
   if (!r) {
     throw Error(`no id: ${id}`)
   }
-  return r
+  return r // r: T
 }

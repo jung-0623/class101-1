@@ -3,7 +3,7 @@ import { IRpc, RpcFunctionResponse, RpcRequest } from "../rpcgen"
 export default async function fetchRpc<T extends keyof IRpc>(
   rpcRequest: RpcRequest<T>,
 ): Promise<RpcFunctionResponse<T>> {
-  const httpResponse = await fetch("/rpc", {
+  const res = await fetch("/rpc", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -11,6 +11,6 @@ export default async function fetchRpc<T extends keyof IRpc>(
     body: JSON.stringify(rpcRequest),
   })
 
-  const json = await httpResponse.json()
+  const json = await res.json()
   return json.response
 }

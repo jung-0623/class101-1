@@ -1,3 +1,4 @@
 .prettierrc
 */.prettierrc
 **/*/.prettierrc
+**/*/key.pem

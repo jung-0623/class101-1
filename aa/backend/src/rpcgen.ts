@@ -70,6 +70,9 @@ export interface ReadOAuth2UrlResponse {
   url: string;
 }
 
+export interface DeleteSessionRequest {}
+export interface DeleteSessionResponse {}
+
 export interface IRpc {
   createPost: (req: CreatePostRequest) => CreatePostResponse;
   createComment: (req: CreateCommentRequest) => CreateCommentResponse;
@@ -79,6 +82,7 @@ export interface IRpc {
   readPreview: (req: ReadPreviewRequest) => ReadPreviewResponse;
   updateProfile: (req: UpdateProfileRequest) => UpdateProfileResponse;
   readOAuth2Url: (req: ReadOAuth2UrlRequest) => ReadOAuth2UrlResponse;
+  deleteSession: (req: DeleteSessionRequest) => DeleteSessionResponse;
 }
 
 type AnyFunction = (...args: any) => any;
@@ -111,6 +115,7 @@ export enum RpcError {
   NoUser,
   NoPost,
   Short,
+  NoSession,
 }
 
 export enum OAuth2Provider {
