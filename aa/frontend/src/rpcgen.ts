@@ -9,6 +9,7 @@ export interface Post {
   body: string;
   timestamp: number;
   comments: Comment[];
+  likeCount: number;
 }
 
 export interface Comment {
@@ -22,6 +23,11 @@ export interface CreatePostRequest {
   body: string;
 }
 export interface CreatePostResponse {}
+
+export interface CreatePostLikeRequest {
+  postId: number;
+}
+export interface CreatePostLikeResponse {}
 
 export interface CreateCommentRequest {
   postId: number;
@@ -45,6 +51,12 @@ export interface UpdateProfileRequest {
   name: string;
 }
 export interface UpdateProfileResponse {}
+
+export interface UpdatePostRequest {
+  postId: number;
+  body: string;
+}
+export interface UpdatePostResponse {}
 
 export interface ReadProfileRequest {}
 export interface ReadProfileResponse {
@@ -76,10 +88,12 @@ export interface DeleteSessionResponse {}
 export interface IRpc {
   createPost: (req: CreatePostRequest) => CreatePostResponse;
   createComment: (req: CreateCommentRequest) => CreateCommentResponse;
+  createPostLike: (req: CreatePostLikeRequest) => CreatePostLikeResponse;
   readPost: (req: ReadPostRequest) => ReadPostResponse;
   readRandomPost: (req: ReadRandomPostRequest) => ReadRandomPostResponse;
   readProfile: (req: ReadProfileRequest) => ReadProfileResponse;
   readPreview: (req: ReadPreviewRequest) => ReadPreviewResponse;
+  updatePost: (req: UpdatePostRequest) => UpdatePostResponse;
   updateProfile: (req: UpdateProfileRequest) => UpdateProfileResponse;
   readOAuth2Url: (req: ReadOAuth2UrlRequest) => ReadOAuth2UrlResponse;
   deleteSession: (req: DeleteSessionRequest) => DeleteSessionResponse;
